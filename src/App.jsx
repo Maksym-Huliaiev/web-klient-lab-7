@@ -24,7 +24,7 @@ function App() {
           <nav className="bg-black/90 border-b border-gray-800 p-4 sticky top-0 z-50 backdrop-blur-lg">
             <div className="max-w-7xl mx-auto flex justify-between items-center px-4">
               <div className="text-xl font-black tracking-tighter text-blue-500 uppercase">
-                Sklad MS
+        
               </div>
               
               <div className="flex gap-8 items-center">
@@ -57,7 +57,7 @@ function App() {
           </main>
 
           <footer className="p-8 text-center text-gray-600 text-xs border-t border-gray-800 mt-20">
-            &copy; 2026 Складська система управління | Лабораторні роботи 7-8
+             Складська система управління | Лабораторні роботи 7-8
           </footer>
         </div>
       </Router>

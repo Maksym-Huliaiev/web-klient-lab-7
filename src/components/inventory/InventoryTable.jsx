@@ -1,53 +1,48 @@
-import React from 'react';
-
-// цей компонент малює таблицю з нашими товарами
-const InventoryTable = ({ items, onEdit, onDelete, onView }) => {
+export default function InventoryTable({ items, onView, onEdit, onDelete }) {
   return (
-    <div className="overflow-x-auto shadow-md rounded-lg">
-      <table className="w-full text-sm text-left text-gray-500">
-        {/* шапка таблиці за вимогами лаби */}
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-          <tr>
-            <th className="px-6 py-3">Фото</th> {/* прев'ю [cite: 57] */}
-            <th className="px-6 py-3">Назва</th> {/* inventory_name [cite: 55] */}
-            <th className="px-6 py-3">Опис</th> {/* description [cite: 56] */}
-            <th className="px-6 py-3 text-center">Дії</th> {/* [cite: 58] */}
+    <div className="overflow-x-auto bg-gray-800 rounded-xl border border-gray-700 shadow-2xl">
+      <table className="w-full text-left border-collapse">
+        <thead>
+          <tr className="bg-gray-900 border-b border-gray-700 text-gray-400 uppercase text-xs tracking-widest">
+            <th className="p-4 font-bold">Фото</th>
+            <th className="p-4 font-bold">Назва</th>
+            <th className="p-4 font-bold text-center">Опис</th>
+            <th className="p-4 font-bold text-right">Дії</th>
           </tr>
         </thead>
         <tbody>
-          {/* перебираємо масив і виводимо кожен рядок */}
           {items.map((item) => (
-            <tr key={item.id} className="bg-white border-b hover:bg-gray-50">
-              <td className="px-6 py-4">
+            <tr key={item.id} className="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors">
+              <td className="p-4">
+                {/* Компактне прев'ю картинки для таблиці */}
                 <img 
-                  src={item.photo_url || 'https://via.placeholder.com/50'} 
-                  alt="preview" 
-                  className="w-12 h-12 object-cover rounded"
+                  src={item.photo_url || 'https://via.placeholder.com/64?text=?'} 
+                  className="w-16 h-16 object-cover rounded-lg border border-gray-600 shadow-sm"
+                  alt="preview"
                 />
               </td>
-              <td className="px-6 py-4 font-medium text-gray-900">
+              <td className="p-4 font-bold text-blue-400">
                 {item.inventory_name}
               </td>
-              <td className="px-6 py-4">
-                <span className="truncate block max-w-xs">{item.description}</span>
+              <td className="p-4 text-gray-400 text-sm max-w-xs italic truncate">
+                {item.description}
               </td>
-              <td className="px-6 py-4 text-center">
-                {/* кнопки для перегляду, редагування та видалення [cite: 59-61] */}
+              <td className="p-4 text-right space-x-3">
                 <button 
                   onClick={() => onView(item.id)} 
-                  className="text-blue-600 hover:underline mx-2"
+                  className="text-blue-500 text-xs font-black uppercase hover:text-white transition-colors"
                 >
-                  Переглянути
+                  Деталі
                 </button>
                 <button 
                   onClick={() => onEdit(item.id)} 
-                  className="text-yellow-600 hover:underline mx-2"
+                  className="text-orange-500 text-xs font-black uppercase hover:text-white transition-colors"
                 >
                   Редагувати
                 </button>
                 <button 
                   onClick={() => onDelete(item.id)} 
-                  className="text-red-600 hover:underline mx-2"
+                  className="text-red-500 text-xs font-black uppercase hover:text-white transition-colors"
                 >
                   Видалити
                 </button>
@@ -58,6 +53,4 @@ const InventoryTable = ({ items, onEdit, onDelete, onView }) => {
       </table>
     </div>
   );
-};
-
-export default InventoryTable;
+}

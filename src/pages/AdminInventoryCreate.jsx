@@ -1,36 +1,54 @@
 import { useNavigate } from 'react-router-dom';
-import { inventoryApi } from '../services/inventoryApi';
 import InventoryForm from '../components/inventory/InventoryForm';
 
 export default function AdminInventoryCreate() {
   const navigate = useNavigate();
 
-  // функція, яка спрацьовує при натисканні "зберегти" у формі
   const handleCreate = async (formData) => {
+    const file = formData.get('photo'); // отримуємо файл з форми
+    
+    // функція для перетворення файлу в текст (Base64)
+    const readFileAsDataURL = (file) => {
+      return new Promise((resolve) => {
+        if (!file || !(file instanceof File)) return resolve("");
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(file);
+      });
+    };
+
     try {
-      // відправляємо дані на сервер (POST /register) [cite: 70-71]
-      await inventoryApi.create(formData);
-      alert("товар успішно додано до складу");
-      // після успіху повертаємо користувача на головну таблицю
-      navigate('/');
+      // чекаємо, поки картинка перетвориться на текст
+      const imageBase64 = await readFileAsDataURL(file);
+
+      const newItem = {
+        id: Date.now(),
+        inventory_name: formData.get('inventory_name'),
+        description: formData.get('description'),
+        photo_url: imageBase64 // тепер тут справжнє фото, а не заглушка!
+      };
+
+      // зберігаємо в localStorage
+      const savedData = localStorage.getItem('my_inventory');
+      const currentItems = savedData ? JSON.parse(savedData) : [];
+      localStorage.setItem('my_inventory', JSON.stringify([...currentItems, newItem]));
+
+      alert("товар з вашим фото успішно додано!");
+      navigate('/admin');
+
     } catch (err) {
-      console.error(err);
-      alert("не вдалося створити товар. перевірте з'єднання");
+      alert("помилка при обробці фото");
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">додавання нової позиції</h1>
-      
-      {/* викликаємо компонент форми, який ми створили раніше [cite: 39] */}
-      <InventoryForm onSubmit={handleCreate} />
-      
-      <button 
-        onClick={() => navigate('/')} 
-        className="mt-4 text-gray-500 hover:underline"
-      >
-        скасувати та повернутися
+    <div className="max-w-2xl mx-auto p-6 text-black text-left">
+      <h1 className="text-3xl font-bold mb-6">Додати новий товар</h1>
+      <div className="bg-white shadow-xl rounded-2xl p-4 border border-gray-100">
+        <InventoryForm onSubmit={handleCreate} />
+      </div>
+      <button onClick={() => navigate('/admin')} className="mt-6 text-gray-400 hover:text-gray-600 underline">
+        скасувати
       </button>
     </div>
   );

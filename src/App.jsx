@@ -1,9 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
-// імпортуємо сторінку галереї (це вже лаба 8)
+// імпорт усіх сторінок
 import InventoryGallery from './pages/InventoryGallery';
-
-// імпортуємо всі сторінки адмінки (лаба 7)
 import AdminInventory from './pages/AdminInventory';
 import AdminInventoryCreate from './pages/AdminInventoryCreate';
 import AdminInventoryEdit from './pages/AdminInventoryEdit';
@@ -12,27 +10,35 @@ import AdminInventoryDetails from './pages/AdminInventoryDetails';
 function App() {
   return (
     <Router>
-      {/* проста навігація зверху, щоб ти міг перемикатися між галереєю та адмінкою */}
-      <nav className="bg-gray-800 p-4 text-white flex gap-6 shadow-lg">
-        <Link to="/" className="hover:text-blue-400 transition-colors font-medium">
-          головна (галерея)
-        </Link>
-        <Link to="/admin" className="hover:text-blue-400 transition-colors font-medium">
-          адмін-панель
-        </Link>
-      </nav>
+      <div className="min-h-screen bg-gray-900 text-white">
+        {/* Оновлене зручне меню навігації */}
+        <nav className="bg-gray-950 border-b border-gray-800 p-4 sticky top-0 z-50 shadow-2xl">
+          <div className="max-w-7xl mx-auto flex justify-center gap-12">
+            <Link 
+              to="/" 
+              className="text-gray-400 hover:text-blue-500 uppercase text-xs font-black tracking-widest transition-all hover:scale-105"
+            >
+              Галерея
+            </Link>
+            <Link 
+              to="/admin" 
+              className="text-gray-400 hover:text-blue-500 uppercase text-xs font-black tracking-widest transition-all hover:scale-105"
+            >
+              Адмін-панель
+            </Link>
+          </div>
+        </nav>
 
-      <div className="min-h-screen bg-gray-50 p-4">
-        <Routes>
-          {/* публічна частина: галерея для користувачів */}
-          <Route path="/" element={<InventoryGallery />} />
-
-          {/* адмінська частина (CRUD операції) */}
-          <Route path="/admin" element={<AdminInventory />} />
-          <Route path="/create" element={<AdminInventoryCreate />} />
-          <Route path="/edit/:id" element={<AdminInventoryEdit />} />
-          <Route path="/details/:id" element={<AdminInventoryDetails />} />
-        </Routes>
+        {/* Контент сторінок */}
+        <main className="p-4">
+          <Routes>
+            <Route path="/" element={<InventoryGallery />} />
+            <Route path="/admin" element={<AdminInventory />} />
+            <Route path="/create" element={<AdminInventoryCreate />} />
+            <Route path="/edit/:id" element={<AdminInventoryEdit />} />
+            <Route path="/details/:id" element={<AdminInventoryDetails />} />
+          </Routes>
+        </main>
       </div>
     </Router>
   );
